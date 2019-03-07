@@ -31,7 +31,7 @@ type DefaultLeaveCommand struct {
 type NOPCommand struct {
 }
 
-// The name of the Join command in the log
+// CommandName: The name of the Join command in the log
 func (c *DefaultJoinCommand) CommandName() string {
 	return "raft:join"
 }
@@ -46,7 +46,7 @@ func (c *DefaultJoinCommand) NodeName() string {
 	return c.Name
 }
 
-// The name of the Leave command in the log
+// CommandName: The name of the Leave command in the log
 func (c *DefaultLeaveCommand) CommandName() string {
 	return "raft:leave"
 }
@@ -60,7 +60,7 @@ func (c *DefaultLeaveCommand) NodeName() string {
 	return c.Name
 }
 
-// The name of the NOP command in the log
+// CommandName: The name of the NOP command in the log
 func (c NOPCommand) CommandName() string {
 	return "raft:nop"
 }

@@ -42,7 +42,7 @@ type HTTPMuxer interface {
 //
 //------------------------------------------------------------------------------
 
-// Creates a new HTTP transporter with the given path prefix.
+// NewHTTPTransporter: Creates a new HTTP transporter with the given path prefix.
 func NewHTTPTransporter(prefix string, timeout time.Duration) *HTTPTransporter {
 	t := &HTTPTransporter{
 		DisableKeepAlives:    false,
@@ -64,27 +64,27 @@ func NewHTTPTransporter(prefix string, timeout time.Duration) *HTTPTransporter {
 //
 //------------------------------------------------------------------------------
 
-// Retrieves the path prefix used by the transporter.
+// Prefix retrieves the path prefix used by the transporter.
 func (t *HTTPTransporter) Prefix() string {
 	return t.prefix
 }
 
-// Retrieves the AppendEntries path.
+// AppendEntriesPath retrieves the AppendEntries path.
 func (t *HTTPTransporter) AppendEntriesPath() string {
 	return t.appendEntriesPath
 }
 
-// Retrieves the RequestVote path.
+// RequestVotePath retrieves the RequestVote path.
 func (t *HTTPTransporter) RequestVotePath() string {
 	return t.requestVotePath
 }
 
-// Retrieves the Snapshot path.
+// SnapshotPath retrieves the Snapshot path.
 func (t *HTTPTransporter) SnapshotPath() string {
 	return t.snapshotPath
 }
 
-// Retrieves the SnapshotRecovery path.
+// SnapshotRecoveryPath retrieves the SnapshotRecovery path.
 func (t *HTTPTransporter) SnapshotRecoveryPath() string {
 	return t.snapshotRecoveryPath
 }
@@ -99,7 +99,7 @@ func (t *HTTPTransporter) SnapshotRecoveryPath() string {
 // Installation
 //--------------------------------------
 
-// Applies Raft routes to an HTTP router for a given server.
+// Install: Applies Raft routes to an HTTP router for a given server.
 func (t *HTTPTransporter) Install(server Server, mux HTTPMuxer) {
 	mux.HandleFunc(t.AppendEntriesPath(), t.appendEntriesHandler(server))
 	mux.HandleFunc(t.RequestVotePath(), t.requestVoteHandler(server))
@@ -111,7 +111,7 @@ func (t *HTTPTransporter) Install(server Server, mux HTTPMuxer) {
 // Outgoing
 //--------------------------------------
 
-// Sends an AppendEntries RPC to a peer.
+// SendAppendEntriesRequest: Sends an AppendEntries RPC to a peer.
 func (t *HTTPTransporter) SendAppendEntriesRequest(server Server, peer *Peer, req *AppendEntriesRequest) *AppendEntriesResponse {
 	var b bytes.Buffer
 	if _, err := req.Encode(&b); err != nil {
@@ -138,7 +138,7 @@ func (t *HTTPTransporter) SendAppendEntriesRequest(server Server, peer *Peer, re
 	return resp
 }
 
-// Sends a RequestVote RPC to a peer.
+// SendVoteRequest: Sends a RequestVote RPC to a peer.
 func (t *HTTPTransporter) SendVoteRequest(server Server, peer *Peer, req *RequestVoteRequest) *RequestVoteResponse {
 	var b bytes.Buffer
 	if _, err := req.Encode(&b); err != nil {
@@ -174,7 +174,7 @@ func joinPath(connectionString, thePath string) string {
 	return u.String()
 }
 
-// Sends a SnapshotRequest RPC to a peer.
+// SendSnapshotRequest: Sends a SnapshotRequest RPC to a peer.
 func (t *HTTPTransporter) SendSnapshotRequest(server Server, peer *Peer, req *SnapshotRequest) *SnapshotResponse {
 	var b bytes.Buffer
 	if _, err := req.Encode(&b); err != nil {
@@ -201,7 +201,7 @@ func (t *HTTPTransporter) SendSnapshotRequest(server Server, peer *Peer, req *Sn
 	return resp
 }
 
-// Sends a SnapshotRequest RPC to a peer.
+// SendSnapshotRecoveryRequest: Sends a SnapshotRequest RPC to a peer.
 func (t *HTTPTransporter) SendSnapshotRecoveryRequest(server Server, peer *Peer, req *SnapshotRecoveryRequest) *SnapshotRecoveryResponse {
 	var b bytes.Buffer
 	if _, err := req.Encode(&b); err != nil {

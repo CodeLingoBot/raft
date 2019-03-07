@@ -8,7 +8,7 @@ import (
 	"github.com/stretchr/testify/mock"
 )
 
-// Ensure that a snapshot occurs when there are existing logs.
+// TestSnapshot ensures that a snapshot occurs when there are existing logs.
 func TestSnapshot(t *testing.T) {
 	runServerWithMockStateMachine(Leader, func(s Server, m *mock.Mock) {
 		m.On("Save").Return([]byte("foo"), nil)
@@ -34,7 +34,7 @@ func TestSnapshot(t *testing.T) {
 	})
 }
 
-// Ensure that a new server can recover from previous snapshot with log
+// TestSnapshotRecovery ensures that a new server can recover from previous snapshot with log
 func TestSnapshotRecovery(t *testing.T) {
 	runServerWithMockStateMachine(Leader, func(s Server, m *mock.Mock) {
 		m.On("Save").Return([]byte("foo"), nil)
@@ -67,7 +67,7 @@ func TestSnapshotRecovery(t *testing.T) {
 	})
 }
 
-// Ensure that a snapshot request can be sent and received.
+// TestSnapshotRequest ensures that a snapshot request can be sent and received.
 func TestSnapshotRequest(t *testing.T) {
 	runServerWithMockStateMachine(Follower, func(s Server, m *mock.Mock) {
 		m.On("Recovery", []byte("bar")).Return(nil)

@@ -158,7 +158,7 @@ type ev struct {
 //
 //------------------------------------------------------------------------------
 
-// Creates a new server with a log at the given path. transporter must
+// NewServer: Creates a new server with a log at the given path. transporter must
 // not be nil. stateMachine can be nil if snapshotting and log
 // compaction is to be disabled. context can be anything (including nil)
 // and is not used by the raft package except returned by
@@ -222,22 +222,22 @@ func NewServer(name string, path string, transporter Transporter, stateMachine S
 // General
 //--------------------------------------
 
-// Retrieves the name of the server.
+// Name retrieves the name of the server.
 func (s *server) Name() string {
 	return s.name
 }
 
-// Retrieves the storage path for the server.
+// Path retrieves the storage path for the server.
 func (s *server) Path() string {
 	return s.path
 }
 
-// The name of the current leader.
+// Leader: The name of the current leader.
 func (s *server) Leader() string {
 	return s.leader
 }
 
-// Retrieves a copy of the peer data.
+// Peers retrieves a copy of the peer data.
 func (s *server) Peers() map[string]*Peer {
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
@@ -249,7 +249,7 @@ func (s *server) Peers() map[string]*Peer {
 	return peers
 }
 
-// Retrieves the object that transports requests.
+// Transporter retrieves the object that transports requests.
 func (s *server) Transporter() Transporter {
 	s.mutex.RLock()
 	defer s.mutex.RUnlock()
@@ -262,22 +262,22 @@ func (s *server) SetTransporter(t Transporter) {
 	s.transporter = t
 }
 
-// Retrieves the context passed into the constructor.
+// Context retrieves the context passed into the constructor.
 func (s *server) Context() interface{} {
 	return s.context
 }
 
-// Retrieves the state machine passed into the constructor.
+// StateMachine retrieves the state machine passed into the constructor.
 func (s *server) StateMachine() StateMachine {
 	return s.stateMachine
 }
 
-// Retrieves the log path for the server.
+// LogPath retrieves the log path for the server.
 func (s *server) LogPath() string {
 	return path.Join(s.path, "log")
 }
 
-// Retrieves the current state of the server.
+// State retrieves the current state of the server.
 func (s *server) State() string {
 	s.mutex.RLock()
 	defer s.mutex.RUnlock()
@@ -308,43 +308,43 @@ func (s *server) setState(state string) {
 	}
 }
 
-// Retrieves the current term of the server.
+// Term retrieves the current term of the server.
 func (s *server) Term() uint64 {
 	s.mutex.RLock()
 	defer s.mutex.RUnlock()
 	return s.currentTerm
 }
 
-// Retrieves the current commit index of the server.
+// CommitIndex retrieves the current commit index of the server.
 func (s *server) CommitIndex() uint64 {
 	s.log.mutex.RLock()
 	defer s.log.mutex.RUnlock()
 	return s.log.commitIndex
 }
 
-// Retrieves the name of the candidate this server voted for in this term.
+// VotedFor retrieves the name of the candidate this server voted for in this term.
 func (s *server) VotedFor() string {
 	return s.votedFor
 }
 
-// Retrieves whether the server's log has no entries.
+// IsLogEmpty retrieves whether the server's log has no entries.
 func (s *server) IsLogEmpty() bool {
 	return s.log.isEmpty()
 }
 
-// A list of all the log entries. This should only be used for debugging purposes.
+// LogEntries: A list of all the log entries. This should only be used for debugging purposes.
 func (s *server) LogEntries() []*LogEntry {
 	s.log.mutex.RLock()
 	defer s.log.mutex.RUnlock()
 	return s.log.entries
 }
 
-// A reference to the command name of the last entry.
+// LastCommandName: A reference to the command name of the last entry.
 func (s *server) LastCommandName() string {
 	return s.log.lastCommandName()
 }
 
-// Get the state of the server for debugging
+// GetState gets the state of the server for debugging
 func (s *server) GetState() string {
 	s.mutex.RLock()
 	defer s.mutex.RUnlock()
@@ -360,14 +360,14 @@ func (s *server) promotable() bool {
 // Membership
 //--------------------------------------
 
-// Retrieves the number of member servers in the consensus.
+// MemberCount retrieves the number of member servers in the consensus.
 func (s *server) MemberCount() int {
 	s.mutex.RLock()
 	defer s.mutex.RUnlock()
 	return len(s.peers) + 1
 }
 
-// Retrieves the number of servers required to make a quorum.
+// QuorumSize retrieves the number of servers required to make a quorum.
 func (s *server) QuorumSize() int {
 	return (s.MemberCount() / 2) + 1
 }
@@ -376,14 +376,14 @@ func (s *server) QuorumSize() int {
 // Election timeout
 //--------------------------------------
 
-// Retrieves the election timeout.
+// ElectionTimeout retrieves the election timeout.
 func (s *server) ElectionTimeout() time.Duration {
 	s.mutex.RLock()
 	defer s.mutex.RUnlock()
 	return s.electionTimeout
 }
 
-// Sets the election timeout.
+// SetElectionTimeout: Sets the election timeout.
 func (s *server) SetElectionTimeout(duration time.Duration) {
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
@@ -394,14 +394,14 @@ func (s *server) SetElectionTimeout(duration time.Duration) {
 // Heartbeat timeout
 //--------------------------------------
 
-// Retrieves the heartbeat timeout.
+// HeartbeatInterval retrieves the heartbeat timeout.
 func (s *server) HeartbeatInterval() time.Duration {
 	s.mutex.RLock()
 	defer s.mutex.RUnlock()
 	return s.heartbeatInterval
 }
 
-// Sets the heartbeat timeout.
+// SetHeartbeatInterval: Sets the heartbeat timeout.
 func (s *server) SetHeartbeatInterval(duration time.Duration) {
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
@@ -514,7 +514,7 @@ func (s *server) Init() error {
 	return nil
 }
 
-// Shuts down the server.
+// Stop: Shuts down the server.
 func (s *server) Stop() {
 	if s.State() == Stopped {
 		return
@@ -529,7 +529,7 @@ func (s *server) Stop() {
 	s.setState(Stopped)
 }
 
-// Checks if the server is currently running.
+// Running checks if the server is currently running.
 func (s *server) Running() bool {
 	s.mutex.RLock()
 	defer s.mutex.RUnlock()
@@ -928,7 +928,7 @@ func (s *server) processCommand(command Command, e *ev) {
 // Append Entries
 //--------------------------------------
 
-// Appends zero or more log entry from the leader to this server.
+// AppendEntries: Appends zero or more log entry from the leader to this server.
 func (s *server) AppendEntries(req *AppendEntriesRequest) *AppendEntriesResponse {
 	ret, _ := s.send(req)
 	resp, _ := ret.(*AppendEntriesResponse)
@@ -1053,7 +1053,7 @@ func (s *server) processVoteResponse(resp *RequestVoteResponse) bool {
 // Request Vote
 //--------------------------------------
 
-// Requests a vote from a server. A vote can be obtained if the vote's term is
+// RequestVote: Requests a vote from a server. A vote can be obtained if the vote's term is
 // at the server's current term and the server has not made a vote yet. A vote
 // can also be obtained if the term is greater than the server's current term.
 func (s *server) RequestVote(req *RequestVoteRequest) *RequestVoteResponse {
@@ -1102,7 +1102,7 @@ func (s *server) processRequestVoteRequest(req *RequestVoteRequest) (*RequestVot
 // Membership
 //--------------------------------------
 
-// Adds a peer to the server.
+// AddPeer adds a peer to the server.
 func (s *server) AddPeer(name string, connectiongString string) error {
 	s.debugln("server.peer.add: ", name, len(s.peers))
 
@@ -1130,7 +1130,7 @@ func (s *server) AddPeer(name string, connectiongString string) error {
 	return nil
 }
 
-// Removes a peer from the server.
+// RemovePeer removes a peer from the server.
 func (s *server) RemovePeer(name string) error {
 	s.debugln("server.peer.remove: ", name, len(s.peers))
 
@@ -1253,7 +1253,7 @@ func (s *server) saveSnapshot() error {
 	return nil
 }
 
-// Retrieves the log path for the server.
+// SnapshotPath retrieves the log path for the server.
 func (s *server) SnapshotPath(lastIndex uint64, lastTerm uint64) string {
 	return path.Join(s.path, "snapshot", fmt.Sprintf("%v_%v.ss", lastTerm, lastIndex))
 }
@@ -1312,7 +1312,7 @@ func (s *server) processSnapshotRecoveryRequest(req *SnapshotRecoveryRequest) *S
 	return newSnapshotRecoveryResponse(req.LastTerm, true, req.LastIndex)
 }
 
-// Load a snapshot at restart
+// LoadSnapshot: Load a snapshot at restart
 func (s *server) LoadSnapshot() error {
 	// Open snapshot/ directory.
 	dir, err := os.OpenFile(path.Join(s.path, "snapshot"), os.O_RDONLY, 0)
@@ -1396,7 +1396,7 @@ func (s *server) LoadSnapshot() error {
 // Config File
 //--------------------------------------
 
-// Flushes commit index to the disk.
+// FlushCommitIndex: Flushes commit index to the disk.
 // So when the raft server restarts, it will commit upto the flushed commitIndex.
 func (s *server) FlushCommitIndex() {
 	s.debugln("server.conf.update")

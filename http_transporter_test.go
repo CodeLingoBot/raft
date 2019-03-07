@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-// Ensure that we can start several servers and have them communicate.
+// TestHTTPTransporter ensures that we can start several servers and have them communicate.
 func TestHTTPTransporter(t *testing.T) {
 	transporter := NewHTTPTransporter("/raft", testElectionTimeout)
 	transporter.DisableKeepAlives = true

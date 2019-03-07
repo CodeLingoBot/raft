@@ -59,7 +59,7 @@ func newLog() *Log {
 // Log Indices
 //--------------------------------------
 
-// The last committed index in the log.
+// CommitIndex: The last committed index in the log.
 func (l *Log) CommitIndex() uint64 {
 	l.mutex.RLock()
 	defer l.mutex.RUnlock()

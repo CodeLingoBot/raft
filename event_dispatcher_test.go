@@ -6,7 +6,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-// Ensure that we can listen and dispatch events.
+// TestDispatchEvent ensures that we can listen and dispatch events.
 func TestDispatchEvent(t *testing.T) {
 	var count int
 	dispatcher := newEventDispatcher(nil)
@@ -23,7 +23,7 @@ func TestDispatchEvent(t *testing.T) {
 	assert.Equal(t, 11, count)
 }
 
-// Ensure that we can add and remove a listener.
+// TestRemoveEventListener ensures that we can add and remove a listener.
 func TestRemoveEventListener(t *testing.T) {
 	var count int
 	f0 := func(e Event) {
@@ -42,7 +42,7 @@ func TestRemoveEventListener(t *testing.T) {
 	assert.Equal(t, 21, count)
 }
 
-// Ensure that event is properly passed to listener.
+// TestEventListener ensures that event is properly passed to listener.
 func TestEventListener(t *testing.T) {
 	dispatcher := newEventDispatcher("X")
 	dispatcher.AddEventListener("foo", func(e Event) {
@@ -54,7 +54,7 @@ func TestEventListener(t *testing.T) {
 	dispatcher.DispatchEvent(&event{typ: "foo", value: 10, prevValue: 20})
 }
 
-// Benchmark the performance of event dispatch.
+// BenchmarkEventDispatch: Benchmark the performance of event dispatch.
 func BenchmarkEventDispatch(b *testing.B) {
 	dispatcher := newEventDispatcher(nil)
 	dispatcher.AddEventListener("xxx", func(e Event) {})

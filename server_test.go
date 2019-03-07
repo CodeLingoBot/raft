@@ -14,7 +14,7 @@ import (
 // Request Vote
 //--------------------------------------
 
-// Ensure that we can request a vote from a server that has not voted.
+// TestServerRequestVote ensures that we can request a vote from a server that has not voted.
 func TestServerRequestVote(t *testing.T) {
 	server := newTestServer("1", &testTransporter{})
 
@@ -30,7 +30,7 @@ func TestServerRequestVote(t *testing.T) {
 	}
 }
 
-// // Ensure that a vote request is denied if it comes from an old term.
+// TestServerRequestVoteDeniedForStaleTerm ensures that a vote request is denied if it comes from an old term.
 func TestServerRequestVoteDeniedForStaleTerm(t *testing.T) {
 	s := newTestServer("1", &testTransporter{})
 
@@ -53,7 +53,7 @@ func TestServerRequestVoteDeniedForStaleTerm(t *testing.T) {
 	}
 }
 
-// Ensure that a vote request is denied if we've already voted for a different candidate.
+// TestServerRequestVoteDeniedIfAlreadyVoted ensures that a vote request is denied if we've already voted for a different candidate.
 func TestServerRequestVoteDeniedIfAlreadyVoted(t *testing.T) {
 	s := newTestServer("1", &testTransporter{})
 
@@ -76,7 +76,7 @@ func TestServerRequestVoteDeniedIfAlreadyVoted(t *testing.T) {
 	}
 }
 
-// Ensure that a vote request is approved if vote occurs in a new term.
+// TestServerRequestVoteApprovedIfAlreadyVotedInOlderTerm ensures that a vote request is approved if vote occurs in a new term.
 func TestServerRequestVoteApprovedIfAlreadyVotedInOlderTerm(t *testing.T) {
 	s := newTestServer("1", &testTransporter{})
 
@@ -102,7 +102,7 @@ func TestServerRequestVoteApprovedIfAlreadyVotedInOlderTerm(t *testing.T) {
 	}
 }
 
-// Ensure that a vote request is denied if the log is out of date.
+// TestServerRequestVoteDenyIfCandidateLogIsBehind ensures that a vote request is denied if the log is out of date.
 func TestServerRequestVoteDenyIfCandidateLogIsBehind(t *testing.T) {
 	tmpLog := newLog()
 	e0, _ := newLogEntry(tmpLog, nil, 1, 1, &testCommand1{Val: "foo", I: 20})
@@ -184,7 +184,7 @@ func TestProcessVoteResponse(t *testing.T) {
 // // Promotion
 // //--------------------------------------
 
-// // Ensure that we can self-promote a server to candidate, obtain votes and become a fearless leader.
+// TestServerPromoteSelf ensures that we can self-promote a server to candidate, obtain votes and become a fearless leader.
 func TestServerPromoteSelf(t *testing.T) {
 	e0, _ := newLogEntry(newLog(), nil, 1, 1, &testCommand1{Val: "foo", I: 20})
 	s := newTestServerWithLog("1", &testTransporter{}, []*LogEntry{e0})
@@ -200,7 +200,7 @@ func TestServerPromoteSelf(t *testing.T) {
 	}
 }
 
-//Ensure that we can promote a server within a cluster to a leader.
+// TestServerPromote ensures that we can promote a server within a cluster to a leader.
 func TestServerPromote(t *testing.T) {
 	lookup := map[string]Server{}
 	transporter := &testTransporter{}
@@ -230,7 +230,7 @@ func TestServerPromote(t *testing.T) {
 // Append Entries
 //--------------------------------------
 
-// Ensure we can append entries to a server.
+// TestServerAppendEntries ensures we can append entries to a server.
 func TestServerAppendEntries(t *testing.T) {
 	s := newTestServer("1", &testTransporter{})
 
@@ -271,7 +271,7 @@ func TestServerAppendEntries(t *testing.T) {
 	}
 }
 
-//Ensure that entries with stale terms are rejected.
+// TestServerAppendEntriesWithStaleTermsAreRejected ensures that entries with stale terms are rejected.
 func TestServerAppendEntriesWithStaleTermsAreRejected(t *testing.T) {
 	s := newTestServer("1", &testTransporter{})
 
@@ -294,7 +294,7 @@ func TestServerAppendEntriesWithStaleTermsAreRejected(t *testing.T) {
 	}
 }
 
-// Ensure that we reject entries if the commit log is different.
+// TestServerAppendEntriesRejectedIfAlreadyCommitted ensures that we reject entries if the commit log is different.
 func TestServerAppendEntriesRejectedIfAlreadyCommitted(t *testing.T) {
 	s := newTestServer("1", &testTransporter{})
 	s.Start()
@@ -318,7 +318,7 @@ func TestServerAppendEntriesRejectedIfAlreadyCommitted(t *testing.T) {
 	}
 }
 
-// Ensure that we uncommitted entries are rolled back if new entries overwrite them.
+// TestServerAppendEntriesOverwritesUncommittedEntries ensures that we uncommitted entries are rolled back if new entries overwrite them.
 func TestServerAppendEntriesOverwritesUncommittedEntries(t *testing.T) {
 	s := newTestServer("1", &testTransporter{})
 	s.Start()
@@ -360,7 +360,7 @@ func TestServerAppendEntriesOverwritesUncommittedEntries(t *testing.T) {
 // Command Execution
 //--------------------------------------
 
-// Ensure that a follower cannot execute a command.
+// TestServerDenyCommandExecutionWhenFollower ensures that a follower cannot execute a command.
 func TestServerDenyCommandExecutionWhenFollower(t *testing.T) {
 	s := newTestServer("1", &testTransporter{})
 	s.Start()
@@ -375,7 +375,7 @@ func TestServerDenyCommandExecutionWhenFollower(t *testing.T) {
 // Recovery
 //--------------------------------------
 
-// Ensure that a follower cannot execute a command.
+// TestServerRecoverFromPreviousLogAndConf ensures that a follower cannot execute a command.
 func TestServerRecoverFromPreviousLogAndConf(t *testing.T) {
 	// Initialize the servers.
 	var mutex sync.RWMutex
@@ -505,7 +505,7 @@ func TestServerRecoverFromPreviousLogAndConf(t *testing.T) {
 // Membership
 //--------------------------------------
 
-// Ensure that we can start a single server and append to its log.
+// TestServerSingleNode ensures that we can start a single server and append to its log.
 func TestServerSingleNode(t *testing.T) {
 	s := newTestServer("1", &testTransporter{})
 	if s.State() != Stopped {
@@ -533,7 +533,7 @@ func TestServerSingleNode(t *testing.T) {
 	}
 }
 
-// Ensure that we can start multiple servers and determine a leader.
+// TestServerMultiNode ensures that we can start multiple servers and determine a leader.
 func TestServerMultiNode(t *testing.T) {
 	// Initialize the servers.
 	var mutex sync.RWMutex

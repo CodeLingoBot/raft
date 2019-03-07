@@ -17,7 +17,7 @@ import (
 // Append
 //--------------------------------------
 
-// Ensure that we can append to a new log.
+// TestLogNewLog ensures that we can append to a new log.
 func TestLogNewLog(t *testing.T) {
 	path := getLogPath()
 	log := newLog()
@@ -60,7 +60,7 @@ func TestLogNewLog(t *testing.T) {
 	}
 }
 
-// Ensure that we can decode and encode to an existing log.
+// TestLogExistingLog ensures that we can decode and encode to an existing log.
 func TestLogExistingLog(t *testing.T) {
 	tmpLog := newLog()
 	e0, _ := newLogEntry(tmpLog, nil, 1, 1, &testCommand1{Val: "foo", I: 20})
@@ -85,7 +85,7 @@ func TestLogExistingLog(t *testing.T) {
 	}
 }
 
-// Ensure that we can check the contents of the log by index/term.
+// TestLogContainsEntries ensures that we can check the contents of the log by index/term.
 func TestLogContainsEntries(t *testing.T) {
 	tmpLog := newLog()
 	e0, _ := newLogEntry(tmpLog, nil, 1, 1, &testCommand1{Val: "foo", I: 20})
@@ -112,7 +112,7 @@ func TestLogContainsEntries(t *testing.T) {
 	}
 }
 
-// Ensure that we can recover from an incomplete/corrupt log and continue logging.
+// TestLogRecovery ensures that we can recover from an incomplete/corrupt log and continue logging.
 func TestLogRecovery(t *testing.T) {
 	tmpLog := newLog()
 	e0, _ := newLogEntry(tmpLog, nil, 1, 1, &testCommand1{Val: "foo", I: 20})
@@ -158,7 +158,7 @@ func TestLogRecovery(t *testing.T) {
 // Append
 //--------------------------------------
 
-// Ensure that we can truncate uncommitted entries in the log.
+// TestLogTruncate ensures that we can truncate uncommitted entries in the log.
 func TestLogTruncate(t *testing.T) {
 	log, path := setupLog(nil)
 	if err := log.open(path); err != nil {

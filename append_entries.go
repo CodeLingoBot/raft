@@ -44,7 +44,7 @@ func newAppendEntriesRequest(term uint64, prevLogIndex uint64, prevLogTerm uint6
 	}
 }
 
-// Encodes the AppendEntriesRequest to a buffer. Returns the number of bytes
+// Encode: Encodes the AppendEntriesRequest to a buffer. Returns the number of bytes
 // written and any error that may have occurred.
 func (req *AppendEntriesRequest) Encode(w io.Writer) (int, error) {
 	pb := &protobuf.AppendEntriesRequest{
@@ -64,7 +64,7 @@ func (req *AppendEntriesRequest) Encode(w io.Writer) (int, error) {
 	return w.Write(p)
 }
 
-// Decodes the AppendEntriesRequest from a buffer. Returns the number of bytes read and
+// Decode decodes the AppendEntriesRequest from a buffer. Returns the number of bytes read and
 // any error that occurs.
 func (req *AppendEntriesRequest) Decode(r io.Reader) (int, error) {
 	data, err := ioutil.ReadAll(r)
@@ -118,7 +118,7 @@ func (aer *AppendEntriesResponse) Success() bool {
 	return aer.pb.GetSuccess()
 }
 
-// Encodes the AppendEntriesResponse to a buffer. Returns the number of bytes
+// Encode: Encodes the AppendEntriesResponse to a buffer. Returns the number of bytes
 // written and any error that may have occurred.
 func (resp *AppendEntriesResponse) Encode(w io.Writer) (int, error) {
 	b, err := proto.Marshal(resp.pb)
@@ -129,7 +129,7 @@ func (resp *AppendEntriesResponse) Encode(w io.Writer) (int, error) {
 	return w.Write(b)
 }
 
-// Decodes the AppendEntriesResponse from a buffer. Returns the number of bytes read and
+// Decode decodes the AppendEntriesResponse from a buffer. Returns the number of bytes read and
 // any error that occurs.
 func (resp *AppendEntriesResponse) Decode(r io.Reader) (int, error) {
 	data, err := ioutil.ReadAll(r)

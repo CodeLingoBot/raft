@@ -104,7 +104,7 @@ func newSnapshotRecoveryRequest(leaderName string, snapshot *Snapshot) *Snapshot
 	}
 }
 
-// Encodes the SnapshotRecoveryRequest to a buffer. Returns the number of bytes
+// Encode: Encodes the SnapshotRecoveryRequest to a buffer. Returns the number of bytes
 // written and any error that may have occurred.
 func (req *SnapshotRecoveryRequest) Encode(w io.Writer) (int, error) {
 
@@ -132,7 +132,7 @@ func (req *SnapshotRecoveryRequest) Encode(w io.Writer) (int, error) {
 	return w.Write(p)
 }
 
-// Decodes the SnapshotRecoveryRequest from a buffer. Returns the number of bytes read and
+// Decode decodes the SnapshotRecoveryRequest from a buffer. Returns the number of bytes read and
 // any error that occurs.
 func (req *SnapshotRecoveryRequest) Decode(r io.Reader) (int, error) {
 	data, err := ioutil.ReadAll(r)
@@ -190,7 +190,7 @@ func (req *SnapshotRecoveryResponse) Encode(w io.Writer) (int, error) {
 	return w.Write(p)
 }
 
-// Decodes the SnapshotRecoveryResponse from a buffer.
+// Decode decodes the SnapshotRecoveryResponse from a buffer.
 func (req *SnapshotRecoveryResponse) Decode(r io.Reader) (int, error) {
 	data, err := ioutil.ReadAll(r)
 
@@ -221,7 +221,7 @@ func newSnapshotRequest(leaderName string, snapshot *Snapshot) *SnapshotRequest 
 	}
 }
 
-// Encodes the SnapshotRequest to a buffer. Returns the number of bytes
+// Encode: Encodes the SnapshotRequest to a buffer. Returns the number of bytes
 // written and any error that may have occurred.
 func (req *SnapshotRequest) Encode(w io.Writer) (int, error) {
 	pb := &protobuf.SnapshotRequest{
@@ -237,7 +237,7 @@ func (req *SnapshotRequest) Encode(w io.Writer) (int, error) {
 	return w.Write(p)
 }
 
-// Decodes the SnapshotRequest from a buffer. Returns the number of bytes read and
+// Decode decodes the SnapshotRequest from a buffer. Returns the number of bytes read and
 // any error that occurs.
 func (req *SnapshotRequest) Decode(r io.Reader) (int, error) {
 	data, err := ioutil.ReadAll(r)
@@ -268,7 +268,7 @@ func newSnapshotResponse(success bool) *SnapshotResponse {
 	}
 }
 
-// Encodes the SnapshotResponse to a buffer. Returns the number of bytes
+// Encode: Encodes the SnapshotResponse to a buffer. Returns the number of bytes
 // written and any error that may have occurred.
 func (resp *SnapshotResponse) Encode(w io.Writer) (int, error) {
 	pb := &protobuf.SnapshotResponse{
@@ -282,7 +282,7 @@ func (resp *SnapshotResponse) Encode(w io.Writer) (int, error) {
 	return w.Write(p)
 }
 
-// Decodes the SnapshotResponse from a buffer. Returns the number of bytes read and
+// Decode decodes the SnapshotResponse from a buffer. Returns the number of bytes read and
 // any error that occurs.
 func (resp *SnapshotResponse) Decode(r io.Reader) (int, error) {
 	data, err := ioutil.ReadAll(r)

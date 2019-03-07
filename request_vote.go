@@ -34,7 +34,7 @@ func newRequestVoteRequest(term uint64, candidateName string, lastLogIndex uint6
 	}
 }
 
-// Encodes the RequestVoteRequest to a buffer. Returns the number of bytes
+// Encode: Encodes the RequestVoteRequest to a buffer. Returns the number of bytes
 // written and any error that may have occurred.
 func (req *RequestVoteRequest) Encode(w io.Writer) (int, error) {
 	pb := &protobuf.RequestVoteRequest{
@@ -51,7 +51,7 @@ func (req *RequestVoteRequest) Encode(w io.Writer) (int, error) {
 	return w.Write(p)
 }
 
-// Decodes the RequestVoteRequest from a buffer. Returns the number of bytes read and
+// Decode decodes the RequestVoteRequest from a buffer. Returns the number of bytes read and
 // any error that occurs.
 func (req *RequestVoteRequest) Decode(r io.Reader) (int, error) {
 	data, err := ioutil.ReadAll(r)
@@ -83,7 +83,7 @@ func newRequestVoteResponse(term uint64, voteGranted bool) *RequestVoteResponse 
 	}
 }
 
-// Encodes the RequestVoteResponse to a buffer. Returns the number of bytes
+// Encode: Encodes the RequestVoteResponse to a buffer. Returns the number of bytes
 // written and any error that may have occurred.
 func (resp *RequestVoteResponse) Encode(w io.Writer) (int, error) {
 	pb := &protobuf.RequestVoteResponse{
@@ -99,7 +99,7 @@ func (resp *RequestVoteResponse) Encode(w io.Writer) (int, error) {
 	return w.Write(p)
 }
 
-// Decodes the RequestVoteResponse from a buffer. Returns the number of bytes read and
+// Decode decodes the RequestVoteResponse from a buffer. Returns the number of bytes read and
 // any error that occurs.
 func (resp *RequestVoteResponse) Decode(r io.Reader) (int, error) {
 	data, err := ioutil.ReadAll(r)

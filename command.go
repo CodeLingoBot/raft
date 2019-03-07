@@ -65,7 +65,7 @@ func newCommand(name string, data []byte) (Command, error) {
 	return copy, nil
 }
 
-// Registers a command by storing a reference to an instance of it.
+// RegisterCommand: Registers a command by storing a reference to an instance of it.
 func RegisterCommand(command Command) {
 	if command == nil {
 		panic(fmt.Sprintf("raft: Cannot register nil"))

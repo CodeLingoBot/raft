@@ -67,7 +67,7 @@ func (e *LogEntry) Command() []byte {
 	return e.pb.GetCommand()
 }
 
-// Encodes the log entry to a buffer. Returns the number of bytes
+// Encode: Encodes the log entry to a buffer. Returns the number of bytes
 // written and any error that may have occurred.
 func (e *LogEntry) Encode(w io.Writer) (int, error) {
 	b, err := proto.Marshal(e.pb)
@@ -82,7 +82,7 @@ func (e *LogEntry) Encode(w io.Writer) (int, error) {
 	return w.Write(b)
 }
 
-// Decodes the log entry from a buffer. Returns the number of bytes read and
+// Decode decodes the log entry from a buffer. Returns the number of bytes read and
 // any error that occurs.
 func (e *LogEntry) Decode(r io.Reader) (int, error) {
 
